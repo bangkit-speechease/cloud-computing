@@ -7,7 +7,9 @@ import librosa
 import tensorflow as tf
 import tensorflow_hub as hub
 
-#For testing = http://127.0.0.1:5000/predict
+#New URL = http://0.0.0.0:8000/predict
+
+#Initialize Flask
 app = Flask(__name__)
 
 #Load the model
@@ -27,7 +29,7 @@ def load_audio_waveform(audio_path, sr=16000):
     except Exception as e:
         raise ValueError(f"Error loading audio: {str(e)}")
 
-#Load YAMNet for extracting audio
+#Load YAMNet layer for extracting audio
 def extract_yamnet_features(waveform, sr=16000):
     try:
         waveform = tf.convert_to_tensor(waveform, dtype=tf.float32)
@@ -36,9 +38,11 @@ def extract_yamnet_features(waveform, sr=16000):
     except Exception as e:
         raise ValueError(f"Error extracting features: {str(e)}")
 
+#Route /predict
 @app.route('/predict', methods=['POST'])
 def predict():
     #Key for testing must be filled with = file
+    #Validation and audio file retrieval
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'}), 400
     
@@ -83,4 +87,4 @@ def predict():
     return jsonify(response)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port="8000")
