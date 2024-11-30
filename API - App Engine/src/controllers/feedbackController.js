@@ -1,4 +1,4 @@
-const { db, admin } = require("../../fire.js");
+const { db, admin } = require("../services/fire.js");
 
 // Library to send HTTP requests and handle responses (e.g., fetching or sending data).
 const axios = require("axios");

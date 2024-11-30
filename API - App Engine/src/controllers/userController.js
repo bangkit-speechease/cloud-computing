@@ -1,5 +1,5 @@
 // Import the database instance from fire.js
-const { db, admin } = require("../../fire.js");
+const { db, admin } = require("../services/fire.js");
 
 // 1. Function to Get Specific User Data
 const getUser = async (req, res) => {

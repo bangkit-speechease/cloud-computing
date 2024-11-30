@@ -8,11 +8,11 @@ const { initializeApp, cert } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 
 // Import the service account credentials for Firebase Admin SDK
-const serviceAccount = require("./serviceAccountKey.json");
+const serviceAccount = require("../../serviceAccountKey.json");
 
 // Initialize Firebase Admin SDK with the service account credentials
 initializeApp({
-  credential: cert(serviceAccount), 
+  credential: cert(serviceAccount),
 });
 
 // Initialize Firestore database instance to interact with Firestore

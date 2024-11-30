@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-const { db, admin } = require("../../fire.js");
+const { db, admin } = require("../services/fire.js");
 const Joi = require("joi");
 const nodemailer = require("nodemailer");
 // const { collection, addDoc } = require("firebase/firestore");

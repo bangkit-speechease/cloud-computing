@@ -1,5 +1,5 @@
 // Import the database instance from fire.js
-const { db } = require("../../fire.js");
+const { db } = require("../services/fire.js");
 
 // Function to fetch the list of content from the "exercises" collection
 const getContentList = async (req, res) => {

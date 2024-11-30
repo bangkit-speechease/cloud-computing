@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
-const feedbackController = require("./feedbackControllers");
+const feedbackController = require("../controllers/feedbackControllers");
 
 // To handle file uploads
 const multer = require("multer");
