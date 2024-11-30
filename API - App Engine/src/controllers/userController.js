@@ -37,19 +37,17 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { name, email } = req.body;
+    const { name } = req.body;
 
     // User Update Process Based on userId in Firebase Auth
     await admin.auth().updateUser(userId, {
       displayName: name,
-      email,
     });
 
     // User Update Process Based on userId in Firestore
     const userRef = db.collection("users").doc(userId);
     await userRef.update({
       name,
-      email,
     });
 
     res.status(200).json({
