@@ -5,7 +5,7 @@ const Joi = require("joi");
 const nodemailer = require("nodemailer");
 // const { collection, addDoc } = require("firebase/firestore");
 
-// Buat Transporter untuk Pengiriman Email (melalui Gmail)
+// Create a Transporter for Sending Emails (via Gmail)
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Fungsi untuk Mengirim Email Verifikasi
+// Function to Send Verification Email
 const sendVerificationEmail = async (email, verificationLink) => {
   const mailOptions = {
     from: '"SpeechEase" <entalk3@gmail.com>',
@@ -34,12 +34,12 @@ const sendVerificationEmail = async (email, verificationLink) => {
   }
 };
 
-// Fungsi untuk Mendaftar Pengguna
+// Function to Register User
 const registerApp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validasi Input
+    // Validate Input
     const schema = Joi.object({
       name: Joi.string().required(),
       email: Joi.string().email().required(),
@@ -50,7 +50,7 @@ const registerApp = async (req, res) => {
       return res.status(400).json({ error: true, message: error.message });
     }
 
-    // Cek Apakah Email Sudah Terdaftar
+    // Check if Email is Already Registered
     const existingUser = await admin
       .auth()
       .getUserByEmail(email)
@@ -62,14 +62,14 @@ const registerApp = async (req, res) => {
       });
     }
 
-    // Buat Akun Firebase
+    // Create Firebase Account
     const userRecord = await admin.auth().createUser({
       email,
       password,
       displayName: name,
     });
 
-    // Simpan Data ke Firestore
+    // Save Data to Firestore
     const userData = {
       name,
       email,
@@ -77,13 +77,13 @@ const registerApp = async (req, res) => {
     };
     await db.collection("users").doc(userRecord.uid).set(userData);
 
-    // Kirim Email Verifikasi
+    // Send Verification Email
     const verificationLink = await admin
       .auth()
       .generateEmailVerificationLink(email);
     await sendVerificationEmail(email, verificationLink);
 
-    // Respons Sukses
+    // Success Response
     res.status(201).json({
       error: false,
       message: "User registered successfully. Please verify your email.",
@@ -97,31 +97,12 @@ const registerApp = async (req, res) => {
   }
 };
 
-// Cloud Function untuk mendeteksi perubahan pengguna
-exports.onUserUpdated = functions.auth.user().onUpdate(async (change) => {
-  const before = change.before.data(); // Data pengguna sebelum diperbarui
-  const after = change.after.data(); // Data pengguna setelah diperbarui
-
-  // Mengecek jika atribut emailVerified telah berubah
-  if (before.emailVerified !== after.emailVerified) {
-    console.log(`Email verification status changed for user ${after.uid}`);
-
-    // Perbarui status verifikasi di Firestore
-    const userRef = admin.firestore().collection("users").doc(after.uid);
-    await userRef.update({
-      emailVerified: after.emailVerified,
-    });
-
-    console.log("Firestore document updated with new emailVerified status");
-  }
-});
-
 // Function to Login into the App and Check Email Verification
 const loginApp = async (req, res) => {
   try {
-    const { token } = req.body; // Token yang dikirim dari client
+    const { token } = req.body; // Token sent from the client
 
-    // Verifikasi token menggunakan Admin SDK
+    // Verify token using Admin SDK
     const decodedToken = await admin.auth().verifyIdToken(token);
     const userRecord = await admin.auth().getUser(decodedToken.uid);
 
@@ -129,17 +110,8 @@ const loginApp = async (req, res) => {
       throw new Error("User not found");
     }
 
-    // Ambil data pengguna dari Firestore untuk memeriksa status verifikasi email
-    const userDoc = await db.collection("users").doc(userRecord.uid).get();
-
-    if (!userDoc.exists) {
-      return res.status(404).json({ error: true, message: "User not found." });
-    }
-
-    const userData = userDoc.data();
-
-    // Periksa status verifikasi email
-    if (!userData.isEmailVerified) {
+    // Check email verification status directly from userRecord
+    if (!userRecord.emailVerified) {
       return res.status(400).json({
         error: true,
         message:
@@ -147,7 +119,7 @@ const loginApp = async (req, res) => {
       });
     }
 
-    // Jika email sudah diverifikasi, lanjutkan dengan login
+    // If email is verified, proceed with login
     res.status(200).json({
       error: false,
       message: "User successfully logged in!",
@@ -165,10 +137,10 @@ const loginApp = async (req, res) => {
   }
 };
 
-// 3. Function to Logout from the App
+// Function to Logout from the App
 const logoutApp = async (req, res) => {
   try {
-    // Ambil token dari request header (Header Authorization)
+    // Get the token from the request header (Authorization Header)
     const token = req.headers.authorization;
 
     if (!token) {
@@ -178,14 +150,14 @@ const logoutApp = async (req, res) => {
       });
     }
 
-    // Verifikasi token menggunakan Admin SDK
+    // Verify token using Admin SDK
     try {
       const decodedToken = await admin.auth().verifyIdToken(token);
 
-      // Jika token valid, cabut refresh token
+      // If token is valid, revoke the refresh token
       await admin.auth().revokeRefreshTokens(decodedToken.uid);
 
-      // Response Sukses
+      // Success Response
       res.status(200).json({
         error: false,
         message: "User successfully logged out.",
