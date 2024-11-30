@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
-const feedbackController = require('./feedbackControllers');
+const feedbackController = require("./feedbackControllers");
 
 // To handle file uploads
-const multer = require('multer');
+const multer = require("multer");
 
 // Configures Multer to store uploaded files in memory as Buffer objects
 const storage = multer.memoryStorage();
@@ -16,6 +16,6 @@ const upload = multer({ storage });
 router.use(bodyParser.json());
 
 // API Endpoint for Get The Feedback for ML Model
-router.post('/feedback', upload.single('file'), feedbackController.getFeedback);
+router.post("/feedback", upload.single("file"), feedbackController.getFeedback);
 
 module.exports = router;

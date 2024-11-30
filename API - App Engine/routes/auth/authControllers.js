@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const { db, admin } = require("../../fire.js");
 const Joi = require("joi");
 const nodemailer = require("nodemailer");
@@ -7,8 +8,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "entalk3@gmail.com",
-    pass: "ssir amng ayrk xjio", // App password dari Gmail
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 

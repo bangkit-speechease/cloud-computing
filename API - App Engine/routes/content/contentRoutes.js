@@ -9,6 +9,6 @@ router.use(bodyParser.json());
 router.get("/content", contentController.getContentList);
 
 // API Endpoint for Get The List of Exercise Content
-router.get("/content/:contentId", contentController.getContentDetails);
+router.get("/content/:id", contentController.getContentDetails);
 
 module.exports = router;

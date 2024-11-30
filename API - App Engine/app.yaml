@@ -1,0 +1,5 @@
+runtime: nodejs20
+
+env_variables:
+  EMAIL_USER: "entalk3@gmail.com"
+  EMAIL_PASS: "ssiramngayrkxjio"
