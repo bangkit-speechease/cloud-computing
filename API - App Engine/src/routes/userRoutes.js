@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/userControllers");
+const userController = require("../controllers/userController");
 
 // API Endpoint for Get Specific User Data
 router.get("/user/:userId", userController.getUser);
