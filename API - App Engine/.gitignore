@@ -2,7 +2,7 @@
 node_modules/
 
 # File kredensial layanan
-# serviceAccountKey.json
+serviceAccountKey.json
 
 # Environment files
 .env
