@@ -20,7 +20,7 @@ const getFeedback = async (req, res) => {
     formData.append("file", audioFile.buffer, audioFile.originalname);
 
     const flaskResponse = await axios.post(
-      "http://0.0.0.0:8000/predict",
+      "https://my-flask-app-950424434728.asia-southeast2.run.app/predict",
       formData,
       {
         headers: formData.getHeaders(),
