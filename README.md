@@ -38,7 +38,6 @@ Error:<br>
 {
   "error": true,
   "message": "Invalid email format.",
-  "details": null
 }
 ```
 
