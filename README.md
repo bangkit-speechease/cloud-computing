@@ -8,7 +8,7 @@ The following APIs are designed for use within the SpeechEase app project. These
 
 ## 1. List API
 
-### Register User
+### a) Register User
 URL: /register
 Method: POST
 Request Body:  
