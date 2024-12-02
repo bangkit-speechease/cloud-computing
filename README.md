@@ -28,7 +28,7 @@ Success (201 - Created):
   "data": {
     "userId": "string",
     "name": "string",
-    "email": "string",
+    "email": "string"
   }
 }
 ```
@@ -37,7 +37,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "Invalid email format.",
+  "message": "Invalid email format."
 }
 ```
 
@@ -69,7 +69,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "Invalid or expired token.",
+  "message": "Invalid or expired token."
 }
 ```
 
@@ -93,8 +93,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "Invalid or missing authorization token.",
-}
+  "message": "Invalid or missing authorization token."
 ```
 
 ### d) Get Specific User Data
@@ -110,7 +109,7 @@ Success (200 - OK):
   "data": {
     "userId": "string",
     "name": "string",
-    "email": "string",
+    "email": "string"
   }
 }
 ```
@@ -119,7 +118,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "User not found!",
+  "message": "User not found!"
 }
 ```
 
@@ -142,7 +141,7 @@ Success (200 - OK):
   "message": "User data successfully updated.",
   "data": {
     "userId": "string",
-    "name": "string",
+    "name": "string"
   }
 }
 ```
@@ -151,7 +150,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "Invalid input data.",
+  "message": "Invalid input data."
 }
 ```
 
@@ -159,7 +158,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "User not found!",
+  "message": "User not found!"
 }
 ```
 
@@ -219,7 +218,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "Failed to retrieve content list.",
+  "message": "Failed to retrieve content list."
 }
 ```
 
@@ -252,7 +251,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "Content ID is required!",
+  "message": "Content ID is required!"
 }
 ```
 (404 - Not Found):
@@ -290,13 +289,13 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "No file uploaded",
+  "message": "No file uploaded"
 }
 ```
 (500 - Internal Server Error):
 ```
 {
   "error": false,
-  "message": "Error processing audio. Please try again.",
+  "message": "Error processing audio. Please try again."
 }
 ```
