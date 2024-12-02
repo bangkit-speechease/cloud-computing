@@ -265,7 +265,10 @@ Error:<br>
 ### i) Submit Audio Feedback
 URL: /feedback<br>
 Method: POST<br>
-Headers: Content-Type: multipart/form-data<br>
+Headers: 
+```
+Content-Type: multipart/form-data<br>
+```
 Request Body (file: Binary data of the audio file required)
 ```
 {
