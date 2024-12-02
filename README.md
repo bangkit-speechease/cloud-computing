@@ -9,8 +9,8 @@ The following APIs are designed for use within the SpeechEase app project. These
 ## 1. List API
 
 ### a) Register User
-URL: /register
-Method: POST
+URL: /register<br>
+Method: POST<br>
 Request Body:  
 ```
 {
@@ -19,7 +19,7 @@ Request Body:
   "password": "string (minimum 6 characters)"
 }
 ```
-Response: 
+Response:<br>
 Success (201 - Created):
 ```
 {
@@ -32,7 +32,7 @@ Success (201 - Created):
   }
 }
 ```
-Error:
+Error:<br>
 (400 - Bad Request)
 ```
 {
@@ -42,16 +42,16 @@ Error:
 }
 ```
 
-### Login User
-URL: /login
-Method: POST
+### b) Login User
+URL: /login<br>
+Method: POST<br>
 Request Body:
 ```
 {
   "token": "string (Firebase ID Token)"
 }
 ```
-Response:
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -65,7 +65,7 @@ Success (200 - OK):
   }
 }
 ```
-Error:
+Error:<br>
 (401 - Unauthorized)
 ```
 {
@@ -74,14 +74,14 @@ Error:
 }
 ```
 
-### Logout User
-URL: /logout
-Method: POST
+### c) Logout User
+URL: /logout<br>
+Method: POST<br>
 Headers:
 ```
 Authorization: Bearer <token>
 ```
-Response:
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -89,7 +89,7 @@ Success (200 - OK):
   "message": "User successfully logged out."
 }
 ```
-Error:
+Error:<br>
 (401 Unauthorized)
 ```
 {
@@ -98,11 +98,11 @@ Error:
 }
 ```
 
-### Get Specific User Data
-URL: /user/:userId
-Method: GET
-Parameters: userId (path parameter, string, required)
-Response:
+### d) Get Specific User Data
+URL: /user/:userId<br>
+Method: GET<br>
+Parameters: userId (path parameter, string, required)<br>
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -115,7 +115,7 @@ Success (200 - OK):
   }
 }
 ```
-Error:
+Error:<br>
 (404 - Not Found)
 ```
 {
@@ -124,10 +124,10 @@ Error:
 }
 ```
 
-### Update Specific User Data
-URL: /update/:userId
-Method: PUT
-Parameters: userId (path parameter, string, required)
+### e) Update Specific User Data
+URL: /update/:userId<br>
+Method: PUT<br>
+Parameters: userId (path parameter, string, required)<br>
 Request Body:
 ```
 {
@@ -135,7 +135,7 @@ Request Body:
 }
 
 ```
-Response:
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -147,7 +147,7 @@ Success (200 - OK):
   }
 }
 ```
-Error:
+Error:<br>
 (400 - Bad Request)
 ```
 {
@@ -164,11 +164,11 @@ Error:
 }
 ```
 
-### Delete Specific User Data
-URL: /delete/:userId
-Method: DELETE
-Parameters: userId (path parameter, string, required)
-Response:
+### f) Delete Specific User Data
+URL: /delete/:userId<br>
+Method: DELETE<br>
+Parameters: userId (path parameter, string, required)<br>
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -185,10 +185,10 @@ Error:
 }
 ```
 
-### Get List of Exercise Content
-URL: /content
-Method: GET
-Response:
+### g) Get List of Exercise Content
+URL: /content<br>
+Method: GET<br>
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -215,7 +215,7 @@ or
   "message": "No content found!"
 }
 ```
-Error:
+Error:<br>
 (500 - Internal Server Error):
 ```
 {
@@ -224,12 +224,11 @@ Error:
 }
 ```
 
-### Get Details of Specific Exercise Content
-URL: /content/:id
-Method: GET
-Parameters: id: Path parameter (string, required)
-Headers: None
-Response:
+### h) Get Details of Specific Exercise Content
+URL: /content/:id<br>
+Method: GET<br>
+Parameters: id: Path parameter (string, required)<br>
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -249,7 +248,7 @@ Success (200 - OK):
   ]
 }
 ```
-Error:
+Error:<br>
 (400 - Bad Request):
 ```
 {
@@ -265,17 +264,17 @@ Error:
 }
 ```
 
-### Submit Audio Feedback
-URL: /feedback
-Method: POST
-Headers: Content-Type: multipart/form-data
+### i) Submit Audio Feedback
+URL: /feedback<br>
+Method: POST<br>
+Headers: Content-Type: multipart/form-data<br>
 Request Body (file: Binary data of the audio file required)
 ```
 {
   "file": "<binary_audio_file>"
 }
 ```
-Response:
+Response:<br>
 Success (200 - OK):
 ```
 {
@@ -287,7 +286,7 @@ Success (200 - OK):
   }
 }
 ```
-Error:
+Error:<br>
 (400 - Bad Request):
 ```
 {
