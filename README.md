@@ -267,7 +267,7 @@ URL: /feedback<br>
 Method: POST<br>
 Headers: 
 ```
-Content-Type: multipart/form-data<br>
+Content-Type: multipart/form-data
 ```
 Request Body (file: Binary data of the audio file required)
 ```
