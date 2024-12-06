@@ -7,7 +7,7 @@ import librosa
 import tensorflow as tf
 import tensorflow_hub as hub
 
-#New URL = http://0.0.0.0:8000/predict
+#New URL = http://0.0.0.0:8080/predict
 
 #Initialize Flask
 app = Flask(__name__)
@@ -17,6 +17,7 @@ model = tf.keras.models.load_model('./model/speech_classification.h5')
 
 #Initialize YAMNet layer
 yamnet_url = "https://tfhub.dev/google/yamnet/1"
+
 yamnet_layer = hub.KerasLayer(yamnet_url, trainable=False)
 
 #Load audio files and process waveform
@@ -37,6 +38,12 @@ def extract_yamnet_features(waveform, sr=16000):
         return tf.reduce_mean(embeddings, axis=0).numpy()
     except Exception as e:
         raise ValueError(f"Error extracting features: {str(e)}")
+
+# Function to detect noise
+def is_noisy(audio_path):
+    audio, sr = librosa.load(audio_path, sr=None)
+    energy = np.mean(np.square(audio))
+    return energy < 1e-4
 
 #Route /predict
 @app.route('/predict', methods=['POST'])
@@ -64,16 +71,18 @@ def predict():
         input_data = np.expand_dims(features, axis=0) 
 
         #Predict using the trained model (get the probability)
-        predictions = model.predict(input_data)[0][0] 
+        prediction = model.predict(input_data)[0][0] 
 
         #Map prediction to class
-        if predictions >= 0.5:
+        if prediction >= 0.5 and is_noisy(file_path):
             result = "Masih Salah, Coba Lagi"
-        else:
+        elif prediction >= 0.5:
             result = "Bagus, Mari Lanjutkan"
+        else:
+            result = "Masih Salah, Coba Lagi"
 
         response = {
-            'prediction_score': float(predictions),
+            'prediction_score': float(f"{prediction:.4f}"),
             'predicted_label': result
         }
         
