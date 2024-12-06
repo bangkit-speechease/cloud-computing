@@ -3,6 +3,7 @@
 const { db, admin } = require("../services/fire.js");
 const Joi = require("joi");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken"); // Import JWT
 // const { collection, addDoc } = require("firebase/firestore");
 
 // Create a Transporter for Sending Emails (via Gmail)
@@ -73,6 +74,7 @@ const registerApp = async (req, res) => {
     const userData = {
       name,
       email,
+      password,
       userId: userRecord.uid,
     };
     await db.collection("users").doc(userRecord.uid).set(userData);
@@ -97,51 +99,61 @@ const registerApp = async (req, res) => {
   }
 };
 
-// Function to Login into the App and Check Email Verification
-const loginApp = async (req, res) => {
+// Fungsi untuk membuat token JWT
+const createToken = async (uid) => {
   try {
-    const { token } = req.body; // Token sent from the client
+    // Buat payload dengan UID pengguna
+    const payload = { uid };
 
-    // Verify token using Admin SDK
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    const userRecord = await admin.auth().getUser(decodedToken.uid);
-
-    if (!userRecord) {
-      throw new Error("User not found");
-    }
-
-    // Check email verification status directly from userRecord
-    if (!userRecord.emailVerified) {
-      return res.status(400).json({
-        error: true,
-        message:
-          "Email not verified. Please verify your email before proceeding.",
-      });
-    }
-
-    // If email is verified, proceed with login
-    res.status(200).json({
-      error: false,
-      message: "User successfully logged in!",
-      loginResult: {
-        userId: userRecord.uid,
-        name: userRecord.displayName,
-        token: token,
-      },
+    // Buat token dengan expiration time (misalnya, 1 jam)
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
     });
+
+    return token;
   } catch (error) {
-    res.status(400).json({
-      error: true,
-      message: error.message,
-    });
+    console.error("Gagal membuat token:", error.message);
+    throw error;
   }
 };
 
-// Function to Logout from the App
+// Function to Login into the App
+const loginApp = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Ambil data pengguna dari Firestore berdasarkan email
+    const userSnapshot = await db
+      .collection("users")
+      .where("email", "==", email)
+      .get();
+
+    if (userSnapshot.empty) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    // Ambil data pengguna
+    const userData = userSnapshot.docs[0].data();
+
+    // Cocokkan password
+    if (userData.password !== password) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    // Jika password cocok, buat token
+    const token = await createToken(userData.userId);
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Fungsi untuk logout dari aplikasi
 const logoutApp = async (req, res) => {
   try {
-    // Get the token from the request header (Authorization Header)
-    const token = req.headers.authorization;
+    // Ambil token dari header permintaan (Authorization Header)
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return res.status(400).json({
@@ -150,17 +162,22 @@ const logoutApp = async (req, res) => {
       });
     }
 
-    // Verify token using Admin SDK
+    // Verifikasi token
     try {
-      const decodedToken = await admin.auth().verifyIdToken(token);
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-      // If token is valid, revoke the refresh token
-      await admin.auth().revokeRefreshTokens(decodedToken.uid);
+      // Buat token baru dengan masa berlaku sangat singkat (misalnya 1 detik)
+      const expiredToken = jwt.sign(
+        { uid: decodedToken.uid },
+        process.env.JWT_SECRET,
+        { expiresIn: "1s" } // Masa berlaku token hanya 1 detik
+      );
 
-      // Success Response
+      // Response sukses dengan token yang sudah tidak valid
       res.status(200).json({
         error: false,
         message: "User successfully logged out.",
+        token: expiredToken, // Token ini sudah tidak berlaku dalam 1 detik
       });
     } catch (error) {
       throw new Error("Invalid token or session expired.");
