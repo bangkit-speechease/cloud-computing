@@ -129,7 +129,9 @@ const loginApp = async (req, res) => {
       .get();
 
     if (userSnapshot.empty) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ error: true, message: "Invalid email or password" });
     }
 
     // Ambil data pengguna
@@ -137,14 +139,26 @@ const loginApp = async (req, res) => {
 
     // Cocokkan password
     if (userData.password !== password) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ error: true, message: "Invalid email or password" });
     }
 
     // Jika password cocok, buat token
     const token = await createToken(userData.userId);
-    res.status(200).json({ token });
+
+    // Response berhasil dengan format yang diminta
+    res.status(200).json({
+      error: false,
+      message: "success",
+      loginResult: {
+        userId: userData.userId,
+        name: userData.name,
+        token: token,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: true, message: "Internal server error" });
   }
 };
 
