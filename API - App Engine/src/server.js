@@ -4,13 +4,15 @@ const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const contentRoutes = require("./routes/contentRoutes.js");
 const feedbackRoutes = require("./routes/feedbackRoutes.js");
+const progressRoutes = require("./routes/progressRoutes.js");
+
 const app = express();
 const cors = require("cors");
 
 app.use(cors());
 app.use(express.json());
 
-app.use(authRoutes, userRoutes, contentRoutes, feedbackRoutes);
+app.use(authRoutes, userRoutes, contentRoutes, feedbackRoutes, progressRoutes);
 
 app.get("/", (req, res) => {
   res.send("Response success!");
