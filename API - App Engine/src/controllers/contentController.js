@@ -5,7 +5,7 @@ const { db } = require("../services/fire.js");
 const getContentList = async (req, res) => {
   try {
     // Query all documents in the "exercises" collection
-    const contentQuery = await db.collection("exercises").get();
+    const contentQuery = await db.collection("exercises").limit(10).get();
 
     // Return an empty array if no content is found
     if (contentQuery.empty) {
