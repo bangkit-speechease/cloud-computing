@@ -527,6 +527,14 @@ Error:<br>
 
 ## 2. Cloud Architecture Design
 <img src="Photos/SpeechEase Cloud Architecture.png" width="auto" height="auto" alt="Cloud Architecture" />
+The SpeechEase application leverages Google Cloud Platform (GCP) to create a robust and scalable architecture hosted in the asia-southeast2 region. The architecture includes the following components:
+
+- Android Application: Serves as the user interface, interacting with backend services.
+- SpeechEase-Backend: Hosted on App Engine, this component acts as the central service layer, handling business logic and communication between other cloud services.
+- SpeechEase-ML-Model: Deployed on Cloud Run, it processes speech data using machine learning models to detect and analyze speech patterns.
+- Database: Firestore is used as the primary database to store user data, contents, feedbacks, progress tracking in a scalable and serverless manner.
+- Cloud Storage: Stores voice, image, and file JSON required for practice section.
+This architecture ensures efficient interaction between components while providing scalability, reliability, and low-latency performance.
 
 ## 3. Database Design
 <img src="Photos/SpeechEase Database-Design.png" width="auto" height="auto" alt="Database Design" />
