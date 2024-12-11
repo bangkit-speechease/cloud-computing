@@ -33,11 +33,26 @@ Success (201 - Created):
 }
 ```
 Error:<br>
-(400 - Bad Request)
+1) (400 - Bad Request)
+- Invalid Input
 ```
 {
   "error": true,
   "message": "Invalid email format."
+}
+```
+- Email Already Registered
+```
+{
+  "error": true,
+  "message": "Email is already registered."
+}
+```
+2) (500 - Internal Server Error)
+```
+{
+  "error": true,
+  "message": "An unexpected error occurred. Please try again later."
 }
 ```
 
@@ -47,7 +62,8 @@ Method: POST<br>
 Request Body:
 ```
 {
-  "token": "string (Firebase ID Token)"
+  "email": "string (valid email format)",
+  "password": "string"
 }
 ```
 Response:<br>
@@ -59,17 +75,23 @@ Success (200 - OK):
   "data": {
     "userId": "string",
     "name": "string",
-    "email": "string",
     "token": "string"
   }
 }
 ```
 Error:<br>
-(401 - Unauthorized)
+1) (401 - Unauthorized)
 ```
 {
   "error": true,
   "message": "Invalid or expired token."
+}
+```
+2) (500 - Internal Server Error):
+```
+{
+  "error": true,
+  "message": "Internal server error."
 }
 ```
 
@@ -86,14 +108,31 @@ Success (200 - OK):
 {
   "error": false,
   "message": "User successfully logged out."
+  "token": "string (expired JWT)"
 }
 ```
 Error:<br>
-(401 Unauthorized)
+1) (400 - Bad Request)
+- Token Missing
 ```
 {
   "error": true,
-  "message": "Invalid or missing authorization token."
+  "message": "No token provided. Please log in first."
+}
+```
+- Token Invalid or Expired
+```
+{
+  "error": true,
+  "message": "Invalid token or session expired."
+}
+```
+2) (500 - Internal Server Error)
+```
+{
+  "error": true,
+  "message": "An unexpected error occurred. Please try again later."
+}
 ```
 
 ### d) Get Specific User Data
