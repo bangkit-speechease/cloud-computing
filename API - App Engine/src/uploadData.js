@@ -1,6 +1,6 @@
 // Import required libraries
 const admin = require("firebase-admin");
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 
 // Initialize Firebase Admin SDK
 const serviceAccount = require("../serviceAccountKey.json");
@@ -54,16 +54,31 @@ const uploadDataToFirestore = async () => {
         : textData["Latihan 3"][i - 40];
 
       // Ensure title matches the correct index for the exercise
-      const title = `Exercise ${i + 1}`; // Ensure title is correctly indexed
+      const title = `Latihan ${i + 1}`; // Ensure title is correctly indexed
 
-      // Create Firestore document
-      const documentId = uuidv4(); // Generate unique ID
+      // // Create Firestore document
+      // const documentId = uuidv4(); // Generate unique ID
+      // await db.collection("exercises").doc(documentId).set({
+      //   contentId: documentId,
+      //   audioGuideUrl: audioUrl,
+      //   imageUrl: imageUrl,
+      //   textPhrase: textPhrase,
+      //   contentType: "exercise", // Adjust as needed
+      //   title: title,
+      // });
+
+      const generateSequentialId = (index) => {
+        return `exercise-${String(index).padStart(3, '0')}`;
+      };
+      
+      // Ganti UUID dengan ID berurutan
+      const documentId = generateSequentialId(i + 1);
       await db.collection("exercises").doc(documentId).set({
         contentId: documentId,
         audioGuideUrl: audioUrl,
         imageUrl: imageUrl,
         textPhrase: textPhrase,
-        contentType: "exercise", // Adjust as needed
+        contentType: "exercise",
         title: title,
       });
 
