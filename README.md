@@ -328,6 +328,14 @@ Error:<br>
   "message": "Content not found!"
 }
 ```
+3) (500 - Internal Server Error):
+```
+(500 - Internal Server Error):
+{
+  "status": "error",
+  "errorMessage": "Failed to retrieve content details."
+}
+```
 
 ### i) Submit Audio Feedback
 URL: /feedback<br>
