@@ -538,7 +538,8 @@ This architecture ensures efficient interaction between components while providi
 
 ## 3. Database Design
 <img src="Photos/SpeechEase Database Design (Final).png" width="auto" height="auto" alt="Database Design" />
-The database design consists of four main tables: User, Content, Progress, and Feedback, with relationships defined among them to track user activities, content details, and feedback:
+The database design consists of four main tables: User, Content, Progress, and Feedback, with relationships defined among them to track user activities, content details, and feedback.
+
 
 1) User Table:
 - This table stores user information, including userId (primary key), username, email, password, dateOfBirth, and createdAt.
