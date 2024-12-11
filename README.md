@@ -10,7 +10,7 @@ The following APIs are designed for use within the SpeechEase app project. These
 4. Processing user feedback via audio submissions to an ML model.
 5. Managing user progress data, including retrieval, addition, and updates, to track and enhance the learning journey within the app.
 
-### 1. List API
+## 1. List API
 
 ### a) Register User
 URL: /register<br>
@@ -523,3 +523,10 @@ Error:<br>
   "error": true,
   "message": "Error updating progress data"
 }
+```
+
+## 2. Cloud Architecture Design
+<img src="Photos/SpeechEase Cloud Architecture.png" width="240" height="240" alt="SpeechEase" />
+
+## 3. Database Design
+<img src="Photos/SpeechEase Database-Design.png" width="240" height="240" alt="SpeechEase" />
