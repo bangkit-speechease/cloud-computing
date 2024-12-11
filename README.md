@@ -538,18 +538,19 @@ This architecture ensures efficient interaction between components while providi
 
 ## 3. Database Design
 <img src="Photos/SpeechEase Database Design (Final).png" width="auto" height="auto" alt="Database Design" />
-The database design consists of four main tables: User, Content, Progress, and Feedback, with relationships defined among them to track user activities, content details, and feedback.<br>
-a) User Table:<br>
-- This table stores user information, including userId (primary key), username, email, password, dateOfBirth, and createdAt.<br>
-- It uniquely identifies each user and serves as a reference in related tables.<br>
-b) Content Table:<br>
-- Contains details about content, with contentId as the primary key.<br>
-- Attributes include title, contentType, imageUrl, audioGuideUrl, and textPhrase for storing different types of content information.<br>
-c) Progress Table:<br>
-- Tracks the progress of users for specific content, using progressId as the primary key.<br>
-- It includes foreign keys (userId, contentId, and feedbackId) linking users, content, and feedback.<br>
-- The timeStamp column records the date of progress.<br>
-d) Feedback Table:<br>
+The database design consists of four main tables: User, Content, Progress, and Feedback, with relationships defined among them to track user activities, content details, and feedback:
+
+a) User Table:
+- This table stores user information, including userId (primary key), username, email, password, dateOfBirth, and createdAt.
+- It uniquely identifies each user and serves as a reference in related tables.
+b) Content Table:
+- Contains details about content, with contentId as the primary key.
+- Attributes include title, contentType, imageUrl, audioGuideUrl, and textPhrase for storing different types of content information.
+c) Progress Table:
+- Tracks the progress of users for specific content, using progressId as the primary key.
+- It includes foreign keys (userId, contentId, and feedbackId) linking users, content, and feedback.
+- The timeStamp column records the date of progress.
+d) Feedback Table:
 - Captures user feedback with feedbackId as the primary key.<br>
-- Includes foreign keys (userId and contentId) for identifying which user provided feedback on specific content.<br>
-- Additional fields include predictedLabel, predictedScore, starScore, and timeStamp for rating and analysis purposes.<br>
+- Includes foreign keys (userId and contentId) for identifying which user provided feedback on specific content.
+- Additional fields include predictedLabel, predictedScore, starScore, and timeStamp for rating and analysis purposes.
