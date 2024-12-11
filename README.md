@@ -382,3 +382,140 @@ Error:<br>
   "message": "Error processing audio. Please try again."
 }
 ```
+
+### j) Get Progress
+URL: /progress/:userId<br>
+Method: GET<br>
+Parameters: id: Path parameter (string, required)<br>
+Headers: 
+```
+Authorization: Bearer <JWT_Token>
+```
+Response:<br>
+Success (200 - OK):
+```
+{
+  "progress": [
+    {
+      "id": "string",
+      "userId": "string",
+      "contentId": "string",
+      "feedbackId": "string",
+      "timestamp": "timestamp"
+    }
+  ]
+}
+```
+Error:<br>
+1) (404 - Not Found):
+```
+{
+  "error": true,
+  "message": "No progress data found for this user and content"
+}
+```
+2) (500 - Internal Server Error):
+```
+{
+  "error": true,
+  "message": "Error fetching progress data: <error_message>"
+}
+```
+
+### k) Add Progress
+URL: /progress<br>
+Method: POST<br>
+Headers: 
+```
+Authorization: Bearer <JWT_Token>
+Content-Type: application/json
+```
+Request Body:
+```
+{
+  "userId": "string",
+  "contentId": "string",
+  "feedbackId": "string"
+}
+```
+Response:<br>
+Success (201 - Created):
+```
+{
+  "message": "Progress added successfully",
+  "progressId": "string"
+}
+```
+Error:<br>
+1) (400 - Bad Request):
+```
+{
+  "error": true,
+  "message": "All fields are required!"
+}
+```
+2) (404 - Not Found):
+```
+{
+  "error": true,
+  "message": "User not found"
+}
+```
+3) (500 - Internal Server Error):
+```
+{
+  "error": true,
+  "message": "Error adding progress data"
+}
+```
+
+### l) Update Progress
+URL: /progress/:progressId<br>
+Method: PUT<br>
+Headers: 
+```
+Authorization: Bearer <JWT_Token>
+Content-Type: application/json
+```
+Request Body:
+```
+{
+  "feedbackId": "string"
+}
+```
+Response:<br>
+Success (200 - OK):
+```
+{
+  "message": "Progress updated successfully",
+  "updatedProgress": {
+    "id": "string",
+    "userId": "string",
+    "contentId": "string",
+    "feedbackId": "string",
+    "timestamp": "timestamp",
+    "updatedAt": "timestamp"
+  }
+}
+```
+Error:<br>
+1) (400 - Bad Request):
+```
+{
+  "error": true,
+  "message": "Invalid data"
+}
+```
+2) (404 - Not Found):
+```
+{
+  "error": true,
+  "message": "Progress not found"
+}
+```
+3) (500 - Internal Server Error):
+```
+{
+  "error": true,
+  "message": "Error updating progress data"
+}
