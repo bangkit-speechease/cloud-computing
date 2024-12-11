@@ -5,6 +5,7 @@ The following APIs are designed for use within the SpeechEase app project. These
 2. Handling user profile data within the app (retrieval, update, deletion).
 3. Providing access to and managing exercise content data.
 4. Processing user feedback via audio submissions to an ML model.
+5. Managing user progress data, including retrieval, addition, and updates, to track and enhance the learning journey within the app.
 
 ## 1. List API
 
