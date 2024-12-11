@@ -248,22 +248,24 @@ Error:
 ### g) Get List of Exercise Content
 URL: /content<br>
 Method: GET<br>
+Headers:
+```
+Authorization: Bearer <JWT_Token>
+```
 Response:<br>
 Success (200 - OK):
 ```
 {
-  "error": false,
+  "status": "success",
   "message": "Content list retrieved successfully.",
   "data": [
     {
-      "documentId": "string",
+      "contentId": "string",
       "title": "string",
-      "description": "string",
       "contentType": "string",
       "imageUrl": "string",
       "textPhrase": "string",
       "audioGuideUrl": "string",
-      "recordInstructionEndpoint": "string"
     }
   ]
 }
@@ -271,12 +273,13 @@ Success (200 - OK):
 or
 ```
 {
-  "error": false,
+  "status": "success",
+  "data:": [],
   "message": "No content found!"
 }
 ```
 Error:<br>
-(500 - Internal Server Error):
+1) (500 - Internal Server Error):
 ```
 {
   "error": true,
@@ -288,6 +291,10 @@ Error:<br>
 URL: /content/:id<br>
 Method: GET<br>
 Parameters: id: Path parameter (string, required)<br>
+Headers:
+```
+Authorization: Bearer <JWT_Token>
+```
 Response:<br>
 Success (200 - OK):
 ```
@@ -296,27 +303,25 @@ Success (200 - OK):
   "message": "Content details retrieved successfully.",
   "data": [
     {
-      "documentId": "string",
+      "contentId": "string",
       "title": "string",
-      "description": "string",
       "contentType": "string",
       "imageUrl": "string",
       "textPhrase": "string",
-      "audioGuideUrl": "string",
-      "recordInstructionEndpoint": "string"
+      "audioGuideUrl": "string"
     }
   ]
 }
 ```
 Error:<br>
-(400 - Bad Request):
+1) (400 - Bad Request):
 ```
 {
   "error": true,
   "message": "Content ID is required!"
 }
 ```
-(404 - Not Found):
+2) (404 - Not Found):
 ```
 {
   "error": false,
@@ -329,12 +334,15 @@ URL: /feedback<br>
 Method: POST<br>
 Headers: 
 ```
+Authorization: Bearer <JWT_Token>
 Content-Type: multipart/form-data
 ```
 Request Body (file: Binary data of the audio file required)
 ```
 {
-  "file": "<binary_audio_file>"
+  "file": "<binary_audio_file>",
+  "userId": "string",
+  "contentId": "string"
 }
 ```
 Response:<br>
@@ -343,21 +351,23 @@ Success (200 - OK):
 {
   "error": false,
   "message": "Audio processed successfully!",
-  "data": {
-    "prediction_score": "number (confidence score of the ML prediction)",
-    "predicted_label": "string (classification result)"
+  "feedback": {
+    "feedbackId": "string",
+    "predictionScore": "number (confidence score of the ML prediction)",
+    "predictedLabel": "string (classification result)",
+    "starScore": "number (1-5 stars based on prediction score)"
   }
 }
 ```
 Error:<br>
-(400 - Bad Request):
+1) (400 - Bad Request):
 ```
 {
   "error": true,
   "message": "No file uploaded"
 }
 ```
-(500 - Internal Server Error):
+2) (500 - Internal Server Error):
 ```
 {
   "error": false,
