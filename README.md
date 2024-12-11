@@ -1,4 +1,7 @@
-# API-SpeechEase
+# Our Description
+Designing and implementing a cloud architecture tailored to the application's needs, utilizing App Engine for backend services, Cloud Run for deploying machine learning models, Cloud Storage for storing assets, Firebase Authentication for user authentication, and Firebase Firestore for data storage. Conducting cost estimations for all required cloud services to ensure budget feasibility. Developing and building backend REST API services with ExpressJS Framework for Node.js to connect the mobile app with various cloud services, including a specific API for consuming machine learning models. Performing thorough testing on both APIs to ensure functionality and reliability. Creating and configuring the necessary cloud infrastructure as planned, followed by deploying the application according to the designed architecture, and managing the IAM & Admin service account.
+
+## API-SpeechEase
 
 The following APIs are designed for use within the SpeechEase app project. These APIs serve the following functions:
 1. Managing user registration, login, and logout processes.
@@ -7,7 +10,7 @@ The following APIs are designed for use within the SpeechEase app project. These
 4. Processing user feedback via audio submissions to an ML model.
 5. Managing user progress data, including retrieval, addition, and updates, to track and enhance the learning journey within the app.
 
-## 1. List API
+### 1. List API
 
 ### a) Register User
 URL: /register<br>
