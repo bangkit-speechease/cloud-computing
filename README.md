@@ -526,7 +526,7 @@ Error:<br>
 ```
 
 ## 2. Cloud Architecture Design
-<img src="Photos/SpeechEase Cloud Architecture.png" width="240" height="240" alt="SpeechEase" />
+<img src="Photos/SpeechEase Cloud Architecture.png" width="auto" height="auto" alt="Cloud Architecture" />
 
 ## 3. Database Design
-<img src="Photos/SpeechEase Database-Design.png" width="240" height="240" alt="SpeechEase" />
+<img src="Photos/SpeechEase Database-Design.png" width="auto" height="auto" alt="Database Design" />
