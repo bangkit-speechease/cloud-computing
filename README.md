@@ -25,20 +25,17 @@ Success (201 - Created):
 {
   "error": false,
   "message": "User registered successfully. Please verify your email.",
-  "data": {
-    "userId": "string",
-    "name": "string",
-    "email": "string"
+  "userId": "string"
   }
 }
 ```
 Error:<br>
 1) (400 - Bad Request)
-- Invalid Input
+- Validation Error
 ```
 {
   "error": true,
-  "message": "Invalid email format."
+  "message": "Validation error message."
 }
 ```
 - Email Already Registered
@@ -52,7 +49,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "An unexpected error occurred. Please try again later."
+  "message": "Error message."
 }
 ```
 
@@ -71,11 +68,11 @@ Success (200 - OK):
 ```
 {
   "error": false,
-  "message": "User successfully logged in!",
-  "data": {
+  "message": "success",
+  "loginResult": {
     "userId": "string",
     "name": "string",
-    "token": "string"
+    "token": "string (JWT Token)"
   }
 }
 ```
@@ -84,7 +81,7 @@ Error:<br>
 ```
 {
   "error": true,
-  "message": "Invalid or expired token."
+  "message": "Invalid email or password."
 }
 ```
 2) (500 - Internal Server Error):
@@ -100,7 +97,7 @@ URL: /logout<br>
 Method: POST<br>
 Headers:
 ```
-Authorization: Bearer <token>
+Authorization: Bearer <JWT_Token>
 ```
 Response:<br>
 Success (200 - OK):
@@ -108,7 +105,7 @@ Success (200 - OK):
 {
   "error": false,
   "message": "User successfully logged out."
-  "token": "string (expired JWT)"
+  "token": "string (expired token)"
 }
 ```
 Error:<br>
@@ -139,13 +136,17 @@ Error:<br>
 URL: /user/:userId<br>
 Method: GET<br>
 Parameters: userId (path parameter, string, required)<br>
+Headers:
+```
+Authorization: Bearer <JWT_Token>
+```
 Response:<br>
 Success (200 - OK):
 ```
 {
   "error": false,
-  "message": "User data retrieved successfully.",
-  "data": {
+  "message": "User data retrieved successfully!",
+  "user": {
     "userId": "string",
     "name": "string",
     "email": "string"
@@ -153,11 +154,18 @@ Success (200 - OK):
 }
 ```
 Error:<br>
-(404 - Not Found)
+1) (404 - Not Found)
 ```
 {
   "error": true,
-  "message": "User not found!"
+  "message": "User data not found!"
+}
+```
+2) (400 - Bad Request)
+```
+{
+  "error": true,
+  "message": "Error message."
 }
 ```
 
@@ -165,6 +173,10 @@ Error:<br>
 URL: /update/:userId<br>
 Method: PUT<br>
 Parameters: userId (path parameter, string, required)<br>
+Headers:
+```
+Authorization: Bearer <JWT_Token>
+```
 Request Body:
 ```
 {
@@ -177,7 +189,7 @@ Success (200 - OK):
 ```
 {
   "error": false,
-  "message": "User data successfully updated.",
+  "message": "User data successfully updated!",
   "data": {
     "userId": "string",
     "name": "string"
@@ -185,19 +197,19 @@ Success (200 - OK):
 }
 ```
 Error:<br>
-(400 - Bad Request)
+1) (400 - Bad Request)
+- Validation Error
 ```
 {
   "error": true,
-  "message": "Invalid input data."
+  "message": "Validation error message."
 }
 ```
-
-(404 - Not Found)
+- General Error
 ```
 {
   "error": true,
-  "message": "User not found!"
+  "message": "Error message"
 }
 ```
 
@@ -205,6 +217,10 @@ Error:<br>
 URL: /delete/:userId<br>
 Method: DELETE<br>
 Parameters: userId (path parameter, string, required)<br>
+Headers:
+```
+Authorization: Bearer <JWT_Token>
+```
 Response:<br>
 Success (200 - OK):
 ```
@@ -214,11 +230,18 @@ Success (200 - OK):
 }
 ```
 Error:
-(404 - Not Found):
+1) (400 - Bad Request):
 ```
 {
   "error": true,
-  "message": "User not found!"
+  "message": "Error message"
+}
+```
+2) (404 - Not Found):
+```
+{
+  "error": true,
+  "message": "User data not found!"
 }
 ```
 
