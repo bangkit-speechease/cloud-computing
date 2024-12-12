@@ -2,38 +2,10 @@
 /* eslint-disable no-undef */
 const { db, admin } = require("../services/fire.js");
 const Joi = require("joi");
-const nodemailer = require("nodemailer");
-const jwt = require("jsonwebtoken"); // Import JWT
-// const { collection, addDoc } = require("firebase/firestore");
-
-// Create a Transporter for Sending Emails (via Gmail)
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-// Function to Send Verification Email
-const sendVerificationEmail = async (email, verificationLink) => {
-  const mailOptions = {
-    from: '"SpeechEase" <entalk3@gmail.com>',
-    to: email,
-    subject: "Email Verification",
-    html: `<p>Hi,</p>
-           <p>Thank you for registering. Please verify your email by clicking the link below:</p>
-           <a href="${verificationLink}">Verify Email</a>
-           <p>If you didn’t request this, you can safely ignore this email.</p>`,
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log(`Verification email sent to: ${email}`);
-  } catch (error) {
-    console.error("Error sending verification email:", error);
-  }
-};
+const jwt = require("jsonwebtoken");
+const sendVerificationEmail = require("../utils/verifyEmail.js");
+const createToken = require("../utils/sendToken.js");
+const { hashPassword, verifyPassword } = require("../utils/verifyPassword.js");
 
 // Function to Register User
 const registerApp = async (req, res) => {
@@ -70,11 +42,13 @@ const registerApp = async (req, res) => {
       displayName: name,
     });
 
+    const hashedPassword = await hashPassword(password);
+
     // Save Data to Firestore
     const userData = {
       name,
       email,
-      password,
+      hashedPassword,
       userId: userRecord.uid,
     };
     await db.collection("users").doc(userRecord.uid).set(userData);
@@ -99,24 +73,6 @@ const registerApp = async (req, res) => {
   }
 };
 
-// Fungsi untuk membuat token JWT
-const createToken = async (uid) => {
-  try {
-    // Buat payload dengan UID pengguna
-    const payload = { uid };
-
-    // Buat token dengan expiration time (misalnya, 1 jam)
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    return token;
-  } catch (error) {
-    console.error("Gagal membuat token:", error.message);
-    throw error;
-  }
-};
-
 // Function to Login into the App
 const loginApp = async (req, res) => {
   const { email, password } = req.body;
@@ -137,8 +93,30 @@ const loginApp = async (req, res) => {
     // Ambil data pengguna
     const userData = userSnapshot.docs[0].data();
 
+    console.log(userData);
+
+    // Cek apakah email sudah diverifikasi
+    try {
+      // Ambil data user berdasarkan email
+      const user = await admin.auth().getUserByEmail(email);
+
+      // Periksa properti emailVerified
+      if (!user.emailVerified) {
+        return res.status(401).json({
+          error: true,
+          message:
+            "Email belum diverifikasi, Mohon untuk verifikasi email anda terlebih dahulu.",
+        });
+      }
+    } catch (error) {
+      console.error("Error saat memeriksa verifikasi email:", error);
+      throw error;
+    }
+
+    const userPassword = userData.hashedPassword;
+
     // Cocokkan password
-    if (userData.password !== password) {
+    if (!verifyPassword(password, userPassword)) {
       return res
         .status(401)
         .json({ error: true, message: "Invalid email or password" });
