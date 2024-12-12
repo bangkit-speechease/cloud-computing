@@ -140,51 +140,7 @@ const loginApp = async (req, res) => {
   }
 };
 
-// Fungsi untuk logout dari aplikasi
-const logoutApp = async (req, res) => {
-  try {
-    // Ambil token dari header permintaan (Authorization Header)
-    const token =
-      req.headers.authorization && req.headers.authorization.split(" ")[1];
-
-    if (!token) {
-      return res.status(400).json({
-        error: true,
-        message: "No token provided. Please log in first.",
-      });
-    }
-
-    // Verifikasi token
-    try {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Buat token baru dengan masa berlaku sangat singkat (misalnya 1 detik)
-      const expiredToken = jwt.sign(
-        { uid: decodedToken.uid },
-        process.env.JWT_SECRET,
-        { expiresIn: "1s" } // Masa berlaku token hanya 1 detik
-      );
-
-      // Response sukses dengan token yang sudah tidak valid
-      res.status(200).json({
-        error: false,
-        message: "User successfully logged out.",
-        token: expiredToken, // Token ini sudah tidak berlaku dalam 1 detik
-      });
-    } catch (error) {
-      throw new Error("Invalid token or session expired.");
-    }
-  } catch (error) {
-    // Error Response
-    res.status(400).json({
-      error: true,
-      message: error.message,
-    });
-  }
-};
-
 module.exports = {
   registerApp,
   loginApp,
-  logoutApp,
 };
